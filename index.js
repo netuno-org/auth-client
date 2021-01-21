@@ -46,7 +46,7 @@ const config = {
                 if (data[settings.token.expiresInKey] == null) {
                     token_expires_in = settings.token.expiresInDefault;
                 } else {
-                    token_expires_in = 10000; //data[settings.token.expiresInKey];
+                    token_expires_in = data[settings.token.expiresInKey];
                 }
                 if (settings.autoLoadServiceHeaders) {
                     _service.config({
@@ -174,7 +174,7 @@ _auth.refreshToken = (args)=> {
 
 _auth.tick = () => {
     if (_auth.isLogged()) {
-        if (token_loaded_in + token_expires_in < new Date().getTime() - 1000) {
+        if (token_loaded_in + token_expires_in < new Date().getTime() - 60000) {
             if (config.autoRefreshToken) {
                 const settings = { };
                 extend(settings, config);
