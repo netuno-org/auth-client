@@ -1,0 +1,36 @@
+{
+    "name": "@netuno/auth-client",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "sitana.pt",
+    "license": "MIT",
+    "repository": "netuno-org/auth-client",
+    "keywords": [
+        "netuno",
+        "client",
+        "fetch",
+        "http",
+        "connection",
+        "ajax",
+        "async",
+        "rest",
+        "simple",
+        "util",
+        "utility",
+        "jwt"
+    ],
+    "dependencies": {
+        "@netuno/service-client": "^1.0.4",
+        "deep-extend": "^0.6.0"
+    },
+    "files": [
+        "LICENSE",
+        "HISTORY.md",
+        "README.md",
+        "index.js"
+    ]
+}
