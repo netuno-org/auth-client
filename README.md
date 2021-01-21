@@ -67,7 +67,7 @@ Default config parameters:
 
 This module depends of `@netuno/service-client`.
 
-So the prefix url should be defined in the `_service.config`, like:
+So the prefix url should be defined in the `_service.config({ ... })`, like:
 
 ```
 _service.config({
@@ -79,7 +79,7 @@ In the global configuration (`_auth.config({...})`) or with the object passed to
 
 The token is stored in the `sessionStorage` with the configuration key defined in `token.storageKey`.
 
-##### Login
+### Login
 
 With success the event `_auth.config({ onLogin: ()=> ... })` will be invoked.
 
@@ -126,7 +126,7 @@ With ReactJS:
     );
 ```
 
-##### Logout
+### Logout
 
 To logout just call this:
 
@@ -136,7 +136,7 @@ To logout just call this:
 
 The event `_auth.config({ onLogout: ()=> ... })` will be invoked.
 
-##### Check if is Logged
+### Logged Check
 
 ```
 if (_auth.isLogged()) {
