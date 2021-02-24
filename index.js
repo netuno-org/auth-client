@@ -86,7 +86,12 @@ const _auth = (args) => {
 };
 
 _auth.config = (settings) => {
-    extend(config, settings);
+    if (!!settings) {
+        extend(config, settings);
+    }
+    const newConfig = {};
+    extend(newConfig, config);
+    return newConfig;
 };
 
 _auth.login = (args)=> {
