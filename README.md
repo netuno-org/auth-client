@@ -1,6 +1,6 @@
 # auth-client
 
-Client to integrations with Netuno Services Authentication using JWT (JSON Web Token).
+Client integrations with Netuno Services Authentication using JWT (JSON Web Token).
 
 More about the [Netuno Platform](https://netuno.org/).
 
