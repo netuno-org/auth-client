@@ -1,4 +1,4 @@
-import extend from 'deep-extend';
+import extend from 'just-extend';
 import _service from '@netuno/service-client';
 
 const config = {
@@ -87,17 +87,17 @@ const _auth = (args) => {
 
 _auth.config = (settings) => {
     if (!!settings) {
-        extend(config, settings);
+        extend(true, config, settings);
     }
     const newConfig = {};
-    extend(newConfig, config);
+    extend(true, newConfig, config);
     return newConfig;
 };
 
 _auth.login = (args)=> {
     const settings = { username: '', password: ''};
-    extend(settings, config);
-    extend(settings, args);
+    extend(true, settings, config);
+    extend(true, settings, args);
     if (!settings.success) {
         settings.success = settings.login.success;
     }
@@ -126,8 +126,8 @@ _auth.login = (args)=> {
 
 _auth.isLogged = (args) => {
     const settings = { };
-    extend(settings, config);
-    extend(settings, args);
+    extend(true, settings, config);
+    extend(true, settings, args);
     if (token == null && sessionStorage.getItem(settings.token.storageKey)) {
         settings.token.load(settings, JSON.parse(sessionStorage.getItem(settings.token.storageKey)));
     }
@@ -136,8 +136,8 @@ _auth.isLogged = (args) => {
 
 _auth.logout = (args) => {
     const settings = { };
-    extend(settings, config);
-    extend(settings, args);
+    extend(true, settings, config);
+    extend(true, settings, args);
     if (settings.token.unload(settings, token)) {
         token = null;
         sessionStorage.removeItem(settings.token.storageKey);
@@ -150,8 +150,8 @@ _auth.refreshToken = (args)=> {
         return;
     }
     const settings = { };
-    extend(settings, config);
-    extend(settings, args);
+    extend(true, settings, config);
+    extend(true, settings, args);
     if (!settings.success) {
         settings.success = settings.refreshToken.success;
     }
@@ -182,7 +182,7 @@ _auth.tick = () => {
         if (token_loaded_in + token_expires_in < new Date().getTime() - 60000) {
             if (config.autoRefreshToken) {
                 const settings = { };
-                extend(settings, config);
+                extend(true, settings, config);
                 settings.success = () => {
                     window.setTimeout(() => _auth.tick(), 250);
                 };
