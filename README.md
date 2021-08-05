@@ -1,5 +1,7 @@
 # auth-client
 
+<a href="https://www.npmjs.com/package/@netuno/auth-client"><img src="https://img.shields.io/npm/v/@netuno/auth-client.svg?style=flat" alt="npm version"></a>
+
 Client to integrations with Netuno Services Authentication using JWT (JSON Web Token).
 
 More about the [Netuno Platform](https://netuno.org/).
