@@ -1,6 +1,6 @@
 {
     "name": "@netuno/auth-client",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "",
     "main": "index.js",
     "scripts": {
@@ -24,7 +24,7 @@
         "jwt"
     ],
     "dependencies": {
-        "@netuno/service-client": "^1.0.8",
+        "@netuno/service-client": "^1.0.10",
         "just-extend": "^4.2.1"
     },
     "files": [
