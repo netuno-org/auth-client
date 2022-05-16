@@ -1,3 +1,15 @@
+# 1.0.6 / 2022-05-16
+
+Service client dependency updated.
+
+# 1.0.5 / 2021-10-18
+
+Service client dependency updated.
+
+# 1.0.4 / 2021-05-26
+
+Extend dependency changed.
+
 # 1.0.3 / 2020-02-24
 
 Obtain configurations with `_auth.config()`.
