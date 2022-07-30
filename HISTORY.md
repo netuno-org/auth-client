@@ -1,3 +1,7 @@
+# 1.0.7 / 2022-07-22
+
+Persist the time when the token is loaded.
+
 # 1.0.6 / 2022-05-16
 
 Service client dependency updated.

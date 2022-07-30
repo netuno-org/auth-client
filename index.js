@@ -29,6 +29,7 @@ const config = {
         expiresInKey: 'expires_in',
         accessTokenKey: 'access_token',
         refreshTokenKey: 'refresh_token',
+        loadedInKey: 'loaded_in',
         tokenTypeKey: 'token_type',
         expiresInDefault: null,
         tokenTypeDefault: null,
@@ -48,6 +49,12 @@ const config = {
                 } else {
                     token_expires_in = data[settings.token.expiresInKey];
                 }
+                if (data[settings.token.loadedInKey] == null) {
+                    token_loaded_in = new Date().getTime();
+                    data[settings.token.loadedInKey] = token_loaded_in;
+                } else {
+                    token_loaded_in = data[settings.token.loadedInKey];
+                }
                 if (settings.autoLoadServiceHeaders) {
                     _service.config({
                         headers: {
@@ -58,7 +65,6 @@ const config = {
                 let isNewLogin = token == null;
                 token = data;
                 sessionStorage.setItem(settings.token.storageKey, JSON.stringify(token));
-                token_loaded_in = new Date().getTime();
                 if (isNewLogin) {
                     settings.onLogin();
                 }
