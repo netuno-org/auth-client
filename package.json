@@ -1,12 +1,13 @@
 {
     "name": "@netuno/auth-client",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "description": "",
     "main": "index.js",
+    "type": "module",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "author": "sitana.pt",
+    "author": "netuno.org",
     "license": "MIT",
     "repository": "netuno-org/auth-client",
     "keywords": [
@@ -24,7 +25,7 @@
         "jwt"
     ],
     "dependencies": {
-        "@netuno/service-client": "^1.1.1",
+        "@netuno/service-client": "^1.2.0",
         "just-extend": "^6.0.1"
     },
     "files": [
