@@ -6,6 +6,7 @@ const config = {
     url: '_auth',
     autoLoadServiceHeaders: true,
     autoRefreshToken: true,
+    storage: 'session',
     login: {
         usernameKey: 'username',
         passwordKey: 'password',
@@ -64,7 +65,11 @@ const config = {
                 }
                 let isNewLogin = token == null;
                 token = data;
-                sessionStorage.setItem(settings.token.storageKey, JSON.stringify(token));
+                if (settings.storage == 'local') {
+                    localStorage.setItem(settings.token.storageKey, JSON.stringify(token));
+                } else {
+                    sessionStorage.setItem(settings.token.storageKey, JSON.stringify(token));
+                }
                 if (isNewLogin) {
                     settings.onLogin();
                 }
@@ -134,8 +139,12 @@ _auth.isLogged = (args) => {
     const settings = { };
     extend(true, settings, config);
     extend(true, settings, args);
-    if (token == null && sessionStorage.getItem(settings.token.storageKey)) {
-        settings.token.load(settings, JSON.parse(sessionStorage.getItem(settings.token.storageKey)));
+    if (token == null) {
+        if (settings.storage == 'local' && localStorage.getItem(settings.token.storageKey)) {
+            settings.token.load(settings, JSON.parse(localStorage.getItem(settings.token.storageKey)));
+        } else if (sessionStorage.getItem(settings.token.storageKey)) {
+            settings.token.load(settings, JSON.parse(sessionStorage.getItem(settings.token.storageKey)));
+        }
     }
     return token != null;
 };
@@ -146,7 +155,11 @@ _auth.logout = (args) => {
     extend(true, settings, args);
     if (settings.token.unload(settings, token)) {
         token = null;
-        sessionStorage.removeItem(settings.token.storageKey);
+        if (settings.storage == 'local') {
+            localStorage.removeItem(settings.token.storageKey);
+        } else {
+            sessionStorage.removeItem(settings.token.storageKey);
+        }
         settings.onLogout();
     }
 };
