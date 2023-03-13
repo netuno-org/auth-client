@@ -1,0 +1,53 @@
+{
+  "cron": {"jobs": []},
+  "settings": {"public": {}},
+  "cors": [{
+    "origins": ["*"],
+    "enabled": true
+  }],
+  "jwt": {
+    "enabled": true,
+    "secret": "JWTRandomSecureSecret",
+    "access_expires": 60,
+    "refresh_expires": 1440,
+    "algorithm": "HS512"
+  },
+  "smtp": {},
+  "name": "auth_client_test",
+  "setup": {
+    "schema": {
+      "execution": true,
+      "auto_create": true
+    },
+    "scripts": {"execution": true},
+    "enabled": true
+  },
+  "language": "en_GB",
+  "firebase": {
+    "app_name": "",
+    "database_url": "",
+    "key_file": "",
+    "listener_secret": ""
+  },
+  "locale": "en_GB",
+  "remote": {},
+  "commands": [{
+    "path": "ui",
+    "command": "npm run watch",
+    "install": "npm install --force",
+    "enabled": true
+  },{
+    "path": "website",
+    "command": "npm run start",
+    "install": "npm install --force",
+    "enabled": true
+  }],
+  "db": {"default": {
+    "password": "",
+    "engine": "h2",
+    "port": "",
+    "host": "",
+    "name": "test",
+    "username": ""
+  }}
+}

@@ -1,0 +1,15 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Server modules dependencies.",
+  "author": "netuno.org",
+  "license": "ISC",
+  "dependencies": {
+    "@netuno/auth-client": "file:../..",
+    "jest": "^28.0.2"
+  },
+  "scripts": {
+    "test": "jest",
+    "test:watch": "npm run test -- --watch"
+  }
+}

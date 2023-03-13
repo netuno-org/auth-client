@@ -1,3 +1,11 @@
+# 1.0.9 / 2023-03-12
+
+NodeJS and module type supported; new storage configuration; new tests.
+
+# 1.0.8 / 2023-02-16
+
+Service client dependency updated.
+
 # 1.0.7 / 2022-07-22
 
 Persist the time when the token is loaded.
