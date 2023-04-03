@@ -1,3 +1,9 @@
+# 1.1.0 / 2023-04-03
+
+Never uses the token to login, and auto-clean the authorization header from the service client.
+
+Module with better compatibilities with NodeJS imports.
+
 # 1.0.9 / 2023-03-12
 
 NodeJS and module type supported; new storage configuration; new tests.

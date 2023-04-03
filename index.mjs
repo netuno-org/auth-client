@@ -12,11 +12,12 @@ const baseLoad = async () => {
 }
 
 const config = {
+    serviceClient: null,
     prefix: '',
     url: '_auth',
     autoLoadServiceHeaders: true,
     autoRefreshToken: true,
-    storage: 'session',
+    storage: isNode ? '.auth.json' : 'session',
     login: {
         usernameKey: 'username',
         passwordKey: 'password',
@@ -67,7 +68,7 @@ const config = {
                     token_loaded_in = data[settings.token.loadedInKey];
                 }
                 if (settings.autoLoadServiceHeaders) {
-                    _service.config({
+                    (settings.serviceClient || _service).config({
                         headers: {
                             "Authorization": `${token_type} ${data.access_token}`
                         }
@@ -95,6 +96,13 @@ const config = {
             }
         },
         unload: (settings, data) => {
+            if (settings.autoLoadServiceHeaders) {
+                (settings.serviceClient || _service).config({
+                    headers: {
+                        "Authorization": ""
+                    }
+                });
+            }
             return true;
         }
     },
@@ -136,9 +144,12 @@ _auth.login = async (args)=> {
     const data = { jwt: true };
     data[settings.login.usernameKey] = settings.username;
     data[settings.login.passwordKey] = settings.password;
-    _service({
+    (settings.serviceClient || _service)({
         url: settings.url,
         method: "POST",
+        headers: {
+            "Authorization": ""
+        },
         data: settings.login.data(data),
         success: (data) => {
             if (settings.token.load(settings, data.json)) {
@@ -210,9 +221,12 @@ _auth.refreshToken = (args)=> {
     }
     const data = { jwt: true };
     data[settings.refreshToken.parameterKey] = token[settings.token.refreshTokenKey];
-    _service({
+    (settings.serviceClient || _service)({
         url: settings.url,
         method: "POST",
+        headers: {
+            "Authorization": ""
+        },
         data: settings.refreshToken.data(data),
         success: (data) => {
             if (settings.token.load(settings, data.json)) {

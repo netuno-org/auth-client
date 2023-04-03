@@ -94,6 +94,13 @@ const config = {
             }
         },
         unload: (settings, data) => {
+            if (settings.autoLoadServiceHeaders) {
+                (settings.serviceClient || _service).config({
+                    headers: {
+                        "Authorization": ""
+                    }
+                });
+            }
             return true;
         }
     },
@@ -136,6 +143,9 @@ _auth.login = (args)=> {
     (settings.serviceClient || _service)({
         url: settings.url,
         method: "POST",
+        headers: {
+            "Authorization": ""
+        },
         data: settings.login.data(data),
         success: (data) => {
             if (settings.token.load(settings, data.json)) {
@@ -209,6 +219,9 @@ _auth.refreshToken = (args)=> {
     (settings.serviceClient || _service)({
         url: settings.url,
         method: "POST",
+        headers: {
+            "Authorization": ""
+        },
         data: settings.refreshToken.data(data),
         success: (data) => {
             if (settings.token.load(settings, data.json)) {
