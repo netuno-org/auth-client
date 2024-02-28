@@ -127,10 +127,13 @@ _auth.config = (settings) => {
     return newConfig;
 };
 
-_auth.login = (args)=> {
+_auth.login = (args) => {
     const settings = { username: '', password: ''};
     extend(true, settings, config);
     extend(true, settings, args);
+    if (!settings.data) {
+        settings.data = settings.login.data;
+    }
     if (!settings.success) {
         settings.success = settings.login.success;
     }
@@ -146,7 +149,7 @@ _auth.login = (args)=> {
         headers: {
             "Authorization": ""
         },
-        data: settings.login.data(data),
+        data: settings.data(data),
         success: (data) => {
             if (settings.token.load(settings, data.json)) {
                 settings.success(data);
@@ -158,6 +161,17 @@ _auth.login = (args)=> {
             settings.fail(data);
         }
     });
+};
+
+_auth.token = (token) => {
+    if (!!token) {
+        const settings = { };
+        extend(true, settings, config);
+        return settings.token.load(settings, token);
+    }
+    const currentToken = {};
+    extend(true, currentToken, config.token);
+    return currentToken;
 };
 
 _auth.isLogged = (args) => {
