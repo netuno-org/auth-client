@@ -1,6 +1,6 @@
 {
     "name": "@netuno/auth-client",
-    "version": "1.1.2",
+    "version": "1.1.1",
     "description": "",
     "main": "index.cjs",
     "type": "module",

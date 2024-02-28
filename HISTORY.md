@@ -1,3 +1,7 @@
+# 1.1.1 / 2024-02-28
+
+A new method to read or change the token, and injection of custom parameters in login improved.
+
 # 1.1.0 / 2023-04-03
 
 Never uses the token to login, and auto-clean the authorization header from the service client.
