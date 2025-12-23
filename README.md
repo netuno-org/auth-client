@@ -1,14 +1,14 @@
 # auth-client
 
+Authentication client for Netuno Platform services integrations using JWT (JSON Web Token).
+
 <a href="https://www.npmjs.com/package/@netuno/auth-client"><img src="https://img.shields.io/npm/v/@netuno/auth-client.svg?style=flat" alt="npm version"></a>
 
-Client to integrations with Netuno Services Authentication using JWT (JSON Web Token).
-
-More about the [Netuno Platform](https://netuno.org/).
+See more about the [Netuno Platform](https://netuno.org/): open source, low-code, and polyglot.
 
 This module makes is easy to support JWT in web applications.
 
-After login is made the Authorization header will be automatically loaded.
+After the login is made, the Authorization header will be automatically loaded.
 
 With this any `_service(...)` call will automatically be authenticated.
 
