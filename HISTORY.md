@@ -1,3 +1,7 @@
+# 1.1.2 / 2025-12-23
+
+Altcha supported and dependencies updated.
+
 # 1.1.1 / 2024-02-28
 
 A new method to read or change the token, and injection of custom parameters in login improved.
