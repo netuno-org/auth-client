@@ -21,6 +21,7 @@ const config = {
     login: {
         usernameKey: 'username',
         passwordKey: 'password',
+        altchaKey: 'altcha',
         data: (data) => {
             return data;
         },
@@ -147,6 +148,9 @@ _auth.login = async (args)=> {
     const data = { jwt: true };
     data[settings.login.usernameKey] = settings.username;
     data[settings.login.passwordKey] = settings.password;
+    if (!!settings.altcha) {
+        data[settings.login.altchaKey] = settings.altcha;
+    }
     (settings.serviceClient || _service)({
         url: settings.url,
         method: "POST",
