@@ -167,14 +167,18 @@ _auth.login = (args) => {
     });
 };
 
-_auth.token = (token) => {
-    if (!!token) {
-        const settings = { };
-        extend(true, settings, config);
-        return settings.token.load(settings, token);
+_auth.token = (args, newToken) => {
+    const settings = { };
+    extend(true, settings, config);
+    extend(true, settings, args);
+    if (!!newToken) {
+        return settings.token.load(settings, newToken);
     }
     const currentToken = {};
     extend(true, currentToken, config.token);
+    if (_auth.isLogged(settings)) {
+        extend(true, currentToken, token);
+    }
     return currentToken;
 };
 
@@ -252,6 +256,16 @@ _auth.refreshToken = (args)=> {
             settings.fail(data);
         }
     });
+};
+
+_auth.accessToken = (args) => {
+    if (_auth.isLogged(args)) {
+        const settings = { };
+        extend(true, settings, config);
+        extend(true, settings, args);
+        return token[settings.token.accessTokenKey];
+    }
+    return null;
 };
 
 _auth.tick = () => {
