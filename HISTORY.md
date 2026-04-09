@@ -1,3 +1,7 @@
+# 1.2.0 / 2026-04-09
+
+Able to get the access token directly and other optimizations to get the full token.
+
 # 1.1.2 / 2025-12-23
 
 Altcha supported and dependencies updated.
