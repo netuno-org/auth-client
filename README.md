@@ -28,24 +28,26 @@ After the login any `_service(...)` call will automatically be authenticated.
 
 Defines the main events:
 
-```
+```javascript
 _auth.config({
     onLogin: () => { alert("Logged in!"); },
     onLogout: () => { alert("Logged out!"); }
 });
 ```
 
-Default config parameters:
+Full configuration with default values:
 
-```
-{
+```javascript
+_auth.config({
     prefix: '',
     url: '_auth',
     autoLoadServiceHeaders: true,
     autoRefreshToken: true,
+    storage: 'session',
     login: {
         usernameKey: 'username',
-        passwordKey: 'password'
+        passwordKey: 'password',
+        altchaKey: 'altcha'
     },
     refreshToken: {
         parameterKey: 'refresh_token'
@@ -62,16 +64,16 @@ Default config parameters:
     },
     onLogin: () => {},
     onLogout: () => {}
-}
+});
 ```
 
 ### Usage
 
-This module depends of `@netuno/service-client`.
+This module depends on `@netuno/service-client`.
 
-So the prefix url should be defined in the `_service.config({ ... })`, like:
+So the prefix url should be defined in the `_service.config({ prefix: '...' })`, like:
 
-```
+```javascript
 _service.config({
     prefix: 'http://localhost:9000/services/'
 });
@@ -81,11 +83,19 @@ In the global configuration (`_auth.config({...})`) or with the object passed to
 
 The token is stored in the `sessionStorage` with the configuration key defined in `token.storageKey`.
 
+To store the token in the `localStorage` change the `storage` configuration to `local`:
+
+```javascript
+_service.config({
+    storage: 'local'
+})
+```
+
 ### Login
 
 With success the event `_auth.config({ onLogin: ()=> ... })` will be invoked.
 
-```
+```javascript
     _auth.login({
         username: "admin",
         password: "secret",
@@ -100,7 +110,7 @@ With success the event `_auth.config({ onLogin: ()=> ... })` will be invoked.
 
 With ReactJS:
 
-```
+```javascript
     const inputUsername = useRef(null);
     const inputPassword = useRef(null);
     const handleLogin = () => {
@@ -132,7 +142,7 @@ With ReactJS:
 
 To logout just call this:
 
-```
+```javascript
     _auth.logout();
 ```
 
@@ -140,7 +150,7 @@ The event `_auth.config({ onLogout: ()=> ... })` will be invoked.
 
 ### Logged Check
 
-```
+```javascript
 if (_auth.isLogged()) {
     alert('Is logged!');
 }
@@ -152,7 +162,7 @@ The refresh token is made automatically.
 
 But is possible to make it manually:
 
-```
+```javascript
     _auth.refreshToken({
         success: ()=> {
             alert("Success.");
@@ -161,4 +171,13 @@ But is possible to make it manually:
             alert("Fail.");
         }
     });
+```
+
+### Get the Access Token
+
+See below how to get the current access token:
+
+```javascript
+const currentAccessToken = _auth.accessToken();
+console.log(`Current Access Token`, currentAccessToken);
 ```
