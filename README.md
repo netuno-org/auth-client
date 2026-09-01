@@ -6,7 +6,7 @@ Authentication client for Netuno Platform services integrations using JWT (JSON 
 
 See more about the [Netuno Platform](https://netuno.org/): open source, low-code, and polyglot.
 
-This module makes is easy to support JWT in web applications.
+This module makes it easy to support JWT authentication in browser and Node.js applications.
 
 After the login is made, the Authorization header will be automatically loaded.
 
@@ -26,10 +26,10 @@ After the login any `_service(...)` call will automatically be authenticated.
 
 ### Config
 
-Defines the main events:
+Defines the main events. With the ES-module build, `config` is asynchronous, so await it before immediately making an authentication request:
 
 ```javascript
-_auth.config({
+await _auth.config({
     onLogin: () => { alert("Logged in!"); },
     onLogout: () => { alert("Logged out!"); }
 });
@@ -38,19 +38,26 @@ _auth.config({
 Full configuration with default values:
 
 ```javascript
-_auth.config({
+await _auth.config({
+    serviceClient: null,
     prefix: '',
     url: '_auth',
     autoLoadServiceHeaders: true,
     autoRefreshToken: true,
-    storage: 'session',
+    storage: typeof window === 'undefined' ? '.auth.json' : 'session',
     login: {
         usernameKey: 'username',
         passwordKey: 'password',
-        altchaKey: 'altcha'
+        altchaKey: 'altcha',
+        data: (data) => data,
+        success: (data) => {},
+        fail: (data) => {}
     },
     refreshToken: {
-        parameterKey: 'refresh_token'
+        parameterKey: 'refresh_token',
+        data: (data) => data,
+        success: (data) => {},
+        fail: (data) => {}
     },
     token: {
         storageKey: '_auth_token',
@@ -58,14 +65,35 @@ _auth.config({
         expiresInKey: 'expires_in',
         accessTokenKey: 'access_token',
         refreshTokenKey: 'refresh_token',
+        loadedInKey: 'loaded_in',
         tokenTypeKey: 'token_type',
         expiresInDefault: null,
-        tokenTypeDefault: null
+        tokenTypeDefault: null,
+        load: (settings, data) => { /* load and persist a valid token */ },
+        unload: (settings, data) => { /* clear the service Authorization header */ }
     },
     onLogin: () => {},
     onLogout: () => {}
 });
 ```
+
+The CommonJS build returns the configuration copy synchronously. `serviceClient` may be set to another compatible service-client function. `prefix` is retained as a compatibility setting but is not read directly by auth-client; configure the URL prefix on the selected service client.
+
+### Public API
+
+| API | Behavior |
+| --- | --- |
+| `_auth(options)` | Shorthand for `_auth.login(options)`. |
+| `_auth.config([settings])` | Deep-merges settings and returns a detached copy of the effective configuration. The ES-module version returns a promise; the CommonJS version returns the copy directly. |
+| `_auth.login(options)` | Sends a JWT login request. `username`, `password`, and optionally `altcha` are mapped through the configured keys. |
+| `_auth.token([settings], [newToken])` | Returns a copy of the current token state. When `newToken` is supplied as the second argument, validates, loads, and persists it and returns `true` or `false`. |
+| `_auth.isLogged([settings])` | Loads persisted state if necessary and reports whether a token is present. |
+| `_auth.logout([settings])` | Unloads and removes the token, clears the service authorization header, and calls `onLogout`. |
+| `_auth.refreshToken([options])` | Requests a replacement token when logged in. |
+| `_auth.accessToken([settings])` | Returns the configured access-token field, or `null` when logged out. |
+| `_auth.tick()` | Runs the browser token-expiry check and schedules the next check. It starts automatically in browser environments. |
+
+The optional per-call settings are deep-merged over the global configuration. Callback-based service completion is used even where the ES-module wrapper itself returns a promise.
 
 ### Usage
 
@@ -81,19 +109,21 @@ _service.config({
 
 In the global configuration (`_auth.config({...})`) or with the object passed to the service function (`_auth.login({...})`), you can set or override any configuration parameters.
 
-The token is stored in the `sessionStorage` with the configuration key defined in `token.storageKey`.
+In browsers, the token is stored in `sessionStorage` with the configuration key defined in `token.storageKey`. In Node.js, the default storage is the `.auth.json` file; set `storage` to another file path or to a falsy value to disable file persistence.
 
 To store the token in the `localStorage` change the `storage` configuration to `local`:
 
 ```javascript
-_service.config({
+await _auth.config({
     storage: 'local'
-})
+});
 ```
 
 ### Login
 
 With success the event `_auth.config({ onLogin: ()=> ... })` will be invoked.
+
+The default login payload contains `jwt: true`, the configured username and password keys, and the ALTCHA field when `altcha` is supplied. `login.data` can transform that payload before it is sent. The default endpoint is `_auth`, using `POST` with an empty request authorization header.
 
 ```javascript
     _auth.login({
@@ -155,6 +185,24 @@ if (_auth.isLogged()) {
     alert('Is logged!');
 }
 ```
+
+### Get or Load the Token
+
+Read a detached copy of the current token state:
+
+Called with no second argument, `_auth.token()` returns an object — a copy of the current token state:
+
+```javascript
+const currentToken = _auth.token();
+```
+
+Called with a token response as the second argument, it loads that response using the active token-field configuration and returns a boolean (`true` on success, `false` if validation fails) — not the token object:
+
+```javascript
+const loaded = _auth.token({}, tokenResponse); // boolean
+```
+
+Loading first validates the configured result, access-token, refresh-token, token-type, and expiry fields. Only when they are all valid does it persist the token and update the selected service client's `Authorization` header (when `autoLoadServiceHeaders` is enabled), then return `true`; if validation fails it makes no changes and returns `false`.
 
 ### Refresh Token
 
