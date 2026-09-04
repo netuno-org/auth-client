@@ -120,9 +120,9 @@ const _auth = (args) => {
 };
 
 /**
- * Update configuration for the authentication client.
- * @param {object} settings - Configuration settings (e.g., URL, storage type, callbacks).
- * @returns {object} The updated configuration object.
+ * Get the current configuration, or update it for the authentication client.
+ * @param {object} [settings] - Configuration settings (e.g., URL, storage type, callbacks).
+ * @returns {object} The current (possibly updated) configuration object.
  */
 _auth.config = (settings) => {
     if (!!settings) {
