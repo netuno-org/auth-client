@@ -121,6 +121,11 @@ const _auth = (args) => {
     return _auth.login(args);
 };
 
+/**
+ * Update configuration for the authentication client.
+ * @param {object} settings - Configuration settings (e.g., URL, storage type, callbacks).
+ * @returns {Promise<object>} The updated configuration object.
+ */
 _auth.config = async (settings) => {
     await baseLoad();
     if (!!settings) {
@@ -131,6 +136,10 @@ _auth.config = async (settings) => {
     return newConfig;
 };
 
+/**
+ * Perform login request.
+ * @param {object} args - Login arguments, requiring at least 'username' and 'password'.
+ */
 _auth.login = async (args)=> {
     await baseLoad();
     const settings = { username: '', password: ''};
@@ -171,6 +180,12 @@ _auth.login = async (args)=> {
     });
 };
 
+/**
+ * Retrieve or set the current authentication token.
+ * @param {object} args - Configuration options.
+ * @param {object} [newToken] - The new token object to set.
+ * @returns {object} The current token object.
+ */
 _auth.token = (args, newToken) => {
     const settings = { };
     extend(true, settings, config);
@@ -186,6 +201,11 @@ _auth.token = (args, newToken) => {
     return currentToken;
 };
 
+/**
+ * Check if the user is currently logged in.
+ * @param {object} [args] - Configuration overrides.
+ * @returns {boolean} True if logged in, false otherwise.
+ */
 _auth.isLogged = (args) => {
     const settings = { };
     extend(true, settings, config);
@@ -206,6 +226,10 @@ _auth.isLogged = (args) => {
     return token != null;
 };
 
+/**
+ * Logout the user, clearing tokens and storage.
+ * @param {object} [args] - Configuration overrides.
+ */
 _auth.logout = async (args) => {
     await baseLoad();
     const settings = { };
@@ -228,6 +252,10 @@ _auth.logout = async (args) => {
     }
 };
 
+/**
+ * Request a new access token using the refresh token.
+ * @param {object} [args] - Request configuration overrides.
+ */
 _auth.refreshToken = (args)=> {
     if (!_auth.isLogged()) {
         return;
@@ -263,6 +291,11 @@ _auth.refreshToken = (args)=> {
     });
 };
 
+/**
+ * Get the current access token string.
+ * @param {object} [args] - Configuration overrides.
+ * @returns {string|null} The access token string, or null if not logged in.
+ */
 _auth.accessToken = (args) => {
     if (_auth.isLogged(args)) {
         const settings = { };
@@ -273,6 +306,9 @@ _auth.accessToken = (args) => {
     return null;
 };
 
+/**
+ * Internal tick loop to check token expiration and optionally refresh.
+ */
 _auth.tick = () => {
     if (_auth.isLogged()) {
         if (token_loaded_in + token_expires_in < new Date().getTime() - 60000) {
