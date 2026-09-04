@@ -26,10 +26,10 @@ After the login any `_service(...)` call will automatically be authenticated.
 
 ### Config
 
-Defines the main events.
+Defines the main events. With the ES-module build, `config` is asynchronous, so await it before immediately making an authentication request:
 
 ```javascript
-_auth.config({
+await _auth.config({
     onLogin: () => { alert("Logged in!"); },
     onLogout: () => { alert("Logged out!"); }
 });
@@ -38,7 +38,7 @@ _auth.config({
 Full configuration with default values:
 
 ```javascript
-_auth.config({
+await _auth.config({
     serviceClient: null,
     prefix: '',
     url: '_auth',
@@ -114,7 +114,7 @@ In browsers, the token is stored in `sessionStorage` with the configuration key 
 To store the token in the `localStorage` change the `storage` configuration to `local`:
 
 ```javascript
-_auth.config({
+await _auth.config({
     storage: 'local'
 });
 ```
