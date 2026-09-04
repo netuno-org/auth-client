@@ -44,7 +44,7 @@ await _auth.config({
     url: '_auth',
     autoLoadServiceHeaders: true,
     autoRefreshToken: true,
-    storage: typeof window === 'undefined' ? '.auth.json' : 'session',
+    storage: (typeof window === 'undefined' && typeof __webpack_require__ === 'undefined') ? '.auth.json' : 'session',
     login: {
         usernameKey: 'username',
         passwordKey: 'password',
